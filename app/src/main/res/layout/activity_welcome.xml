@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.br.scout.WelcomeActivity"
+    android:gravity="center_horizontal"
+    android:padding="12dp"
+    android:background="#91bfb9"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="225dp"
+        android:layout_height="125dp"
+        android:layout_marginTop="90dp"
+        android:background="@drawable/logo_nome"/>
+    <EditText
+        android:inputType="textEmailAddress"
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="E-mail"/>
+    <EditText
+        android:inputType="textPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Senha"/>
+    <Button
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Entrar"
+        android:textColor="#ffff"
+        android:background="@drawable/main_button_style"/>
+    <TextView
+        android:layout_marginTop="30dp"
+        android:id="@+id/sign_up"
+        android:text="Não sou cadastrado"
+        android:textSize="18sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_marginTop="40dp"
+        android:id="@+id/skip_login"
+        android:text="Pular cadastro"
+        android:textSize="18sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
