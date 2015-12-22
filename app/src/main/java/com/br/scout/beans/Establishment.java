@@ -10,6 +10,7 @@ public class Establishment {
     private String address;
     private double latitude;
     private double longitude;
+    private User user;
 
     public long getId() {
         return id;
@@ -57,5 +58,13 @@ public class Establishment {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

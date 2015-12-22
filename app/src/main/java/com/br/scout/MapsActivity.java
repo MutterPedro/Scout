@@ -13,14 +13,13 @@ import android.widget.EditText;
 
 import com.br.scout.backend.DatabaseOperations;
 import com.br.scout.beans.Obstacle;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -56,8 +55,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
-        LatLng marker1 = new LatLng(-21.22752687, -44.97900903);
-        mMap.addMarker(new MarkerOptions().position(marker1).title("Árvore"));
+        List<Obstacle> list = dbOperations.listAllObstacles();
+
+        for(int i=0;i<list.size();i++){
+            LatLng marker = new LatLng(list.get(i).getLatitude(), list.get(i).getLongitude());
+            mMap.addMarker(new MarkerOptions().position(marker).title(list.get(i).getName()));
+        }
+
+
         //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney,10));
 
         /*mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
