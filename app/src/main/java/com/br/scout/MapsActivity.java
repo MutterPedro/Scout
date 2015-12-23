@@ -1,5 +1,6 @@
 package com.br.scout;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,22 +11,33 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ListView;
 
+import com.br.scout.adapter.ObstacleListAdapter;
 import com.br.scout.backend.DatabaseOperations;
 import com.br.scout.beans.Obstacle;
+import com.br.scout.beans.User;
+import com.br.scout.widget.Utility;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
+    public static LatLng MY_LOC;
     private GoogleMap mMap;
-    Context ctx;
+    Activity ctx;
     DatabaseOperations dbOperations;
+    ObstacleListAdapter adapter;
+    List<Obstacle> obstacleList=new ArrayList<Obstacle>();;
+    ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,49 +49,42 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
         ctx = this;
         dbOperations = new DatabaseOperations(ctx);
+
+        listView = (ListView) findViewById(R.id.list_item);
+        adapter = new ObstacleListAdapter(this, obstacleList);
+        listView.setAdapter(adapter);
     }
 
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
-        List<Obstacle> list = dbOperations.listAllObstacles();
-
-        for(int i=0;i<list.size();i++){
-            LatLng marker = new LatLng(list.get(i).getLatitude(), list.get(i).getLongitude());
-            mMap.addMarker(new MarkerOptions().position(marker).title(list.get(i).getName()));
-        }
-
-
-        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney,10));
-
-        /*mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+        mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
 
             @Override
             public void onMyLocationChange(Location location) {
 
-                // TODO Auto-generated method stub
-                Log.v("current location lat:", "" + location.getLatitude());
-                Log.v("current location lng:", "" + location.getLongitude());
-                mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
-                CameraUpdate center =
-                        CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 20);
+                //mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
+                //CameraUpdate center =
+                //      CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 20);
 
-                mMap.moveCamera(center);
+                //mMap.moveCamera(center);
+                MY_LOC = new LatLng(location.getLatitude(), location.getLongitude());
+                obstacleList.clear();
+                obstacleList.addAll(dbOperations.listAllObstacles());
+                for(int i=0;i<obstacleList.size();i++){
+                    LatLng marker = new LatLng(obstacleList.get(i).getLatitude(), obstacleList.get(i).getLongitude());
+                    mMap.addMarker(new MarkerOptions().position(marker).title(obstacleList.get(i).getName()));
+                }
+
+                adapter.notifyDataSetChanged();
+                Utility.setListViewHeightBasedOnChildren(listView);
+
             }
-        });*/
+        });
 
         setMapIfNeeded();
 
@@ -102,9 +107,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 obstacle.setName(String.valueOf(((EditText) textEntryView.findViewById(R.id.edit_text)).getText()));
                                 obstacle.setLatitude(latLng.latitude);
                                 obstacle.setLongitude(latLng.longitude);
+                                obstacle.setUser(new User());
                                 if (!obstacle.getName().isEmpty()) {
                                     dbOperations.addObstacle(obstacle);
-                                    mMap.addMarker(new MarkerOptions().position(new LatLng(obstacle.getLatitude(),obstacle.getLongitude()))
+                                    mMap.addMarker(new MarkerOptions().position(new LatLng(obstacle.getLatitude(), obstacle.getLongitude()))
                                             .title(obstacle.getName()));
                                 }
                             }
@@ -114,4 +120,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
     }
+
 }

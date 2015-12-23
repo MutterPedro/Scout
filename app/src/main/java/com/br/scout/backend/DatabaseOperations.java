@@ -26,8 +26,8 @@ public class DatabaseOperations extends SQLiteOpenHelper {
     private static final String TABLE_USERS = "users";
 
     public String CREATE_USER_TABLE = "CREATE TABLE "+ TABLE_USERS+"(id INTEGER PRIMARY KEY, name TEXT, email TEXT, password TEXT, photoLink TEXT, points DOUBLE, special BOOLEAN)";
-    public String CREATE_OBSTACLE_TABLE = "CREATE TABLE obstacle (id INTEGER PRIMARY KEY, name TEXT, latitude DOUBLE, longitude DOUBLE, INTEGER user_id)";
-    public String CREATE_ESTABLISHMENT_TABLE = "CREATE TABLE establishment (id INTEGER PRIMARY KEY, name TEXT, description TEXT, address TEXT, latitude DOUBLE, longitude DOUBLE, INTEGER user_id)";
+    public String CREATE_OBSTACLE_TABLE = "CREATE TABLE obstacle (id INTEGER PRIMARY KEY, name TEXT, latitude DOUBLE, longitude DOUBLE, user_id INTEGER)";
+    public String CREATE_ESTABLISHMENT_TABLE = "CREATE TABLE establishment (id INTEGER PRIMARY KEY, name TEXT, description TEXT, address TEXT, latitude DOUBLE, longitude DOUBLE, user_id INTEGER)";
 
 
 

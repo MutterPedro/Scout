@@ -7,4 +7,10 @@
     android:layout_margin="12dp"
     android:layout_gravity="center">
 
+    <TextView
+        android:text="Buraco à 10 passos a frente"
+        android:focusable="true"
+        android:id="@+id/obstacle_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </FrameLayout>
