@@ -17,17 +17,20 @@
         android:layout_marginTop="90dp"
         android:background="@drawable/logo_nome"/>
     <EditText
+        android:id="@+id/email_text"
         android:inputType="textEmailAddress"
         android:layout_marginTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="E-mail"/>
     <EditText
+        android:id="@id/password_text"
         android:inputType="textPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Senha"/>
     <Button
+        android:id="@+id/sign_in_btn"
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

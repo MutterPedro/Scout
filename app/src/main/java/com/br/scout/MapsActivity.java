@@ -2,12 +2,10 @@ package com.br.scout;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -18,8 +16,6 @@ import com.br.scout.backend.DatabaseOperations;
 import com.br.scout.beans.Obstacle;
 import com.br.scout.beans.User;
 import com.br.scout.widget.Utility;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -36,7 +32,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Activity ctx;
     DatabaseOperations dbOperations;
     ObstacleListAdapter adapter;
-    List<Obstacle> obstacleList=new ArrayList<Obstacle>();;
+    List<Obstacle> obstacleList=new ArrayList<Obstacle>();
     ListView listView;
 
     @Override

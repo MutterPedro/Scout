@@ -5,10 +5,14 @@ import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.br.scout.beans.User;
+
 /**
  * Created by root on 23/12/15.
  */
 public class Utility {
+
+    public static User USER=null;
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();

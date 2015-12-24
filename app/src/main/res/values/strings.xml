@@ -4,4 +4,5 @@
     <string name="title_activity_maps">Mapa</string>
     <string name="title_activity_sign_up">Cadastrar</string>
     <string name="title_activity_set_destination">SetDestinationActivity</string>
+    <string name="title_activity_not_special">NotSpecialActivity</string>
 </resources>

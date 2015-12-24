@@ -70,6 +70,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.br.scout.WelcomeActivity" />
         </activity>
+        <activity
+            android:name=".NotSpecialActivity"
+            android:label="@string/title_activity_not_special"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

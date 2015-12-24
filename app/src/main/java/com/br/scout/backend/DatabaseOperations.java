@@ -116,7 +116,7 @@ public class DatabaseOperations extends SQLiteOpenHelper {
             obstacle.setName(cursor.getString(1));
             obstacle.setLatitude(Double.parseDouble(cursor.getString(2)));
             obstacle.setLongitude(Double.parseDouble(cursor.getString(3)));
-            obstacle.setUser(retrieveById(Long.parseLong(cursor.getString(4))));
+            obstacle.setUser(retrieveUserById(Long.parseLong(cursor.getString(4))));
             cursor.close();
         } else {
             obstacle = null;
@@ -172,10 +172,36 @@ public class DatabaseOperations extends SQLiteOpenHelper {
         return list;
     }
 
-    public User retrieveById(long id){
-        String query = "Select * FROM user WHERE id =  \"" + id + "\"";
+    public User retrieveUserById(long id){
+        String query = "Select * FROM users WHERE id =  \"" + id + "\"";
 
         SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        User user = new User();
+
+        if (cursor.moveToFirst()) {
+            cursor.moveToFirst();
+            user.setId(Long.parseLong(cursor.getString(0)));
+            user.setName(cursor.getString(1));
+            user.setEmail(cursor.getString(2));
+            user.setPassword(cursor.getString(3));
+            user.setPhotoLink(cursor.getString(4));
+            user.setPoints(Double.parseDouble(cursor.getString(5)));
+            user.setSpecial(Boolean.parseBoolean(cursor.getString(6)));
+            cursor.close();
+        } else {
+            user = null;
+        }
+        db.close();
+        return user;
+    }
+
+    public User loginUser(String email,String password) {
+        String query = "Select * FROM users WHERE email =  \"" + email + "\" AND password = \""+password+"\"";
+
+        SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.rawQuery(query, null);
 
