@@ -60,8 +60,9 @@ public class ObstacleListAdapter extends BaseAdapter {
 
         Obstacle obstacle = feedItems.get(position);
 
-        text.setText(obstacle.getName()+" à "+
-                calculationByDistance(MapsActivity.MY_LOC,new LatLng(obstacle.getLatitude(),obstacle.getLongitude()))+" metros");
+        int distance = calculationByDistance(MapsActivity.MY_LOC, new LatLng(obstacle.getLatitude(), obstacle.getLongitude()));
+
+        text.setText(obstacle.getName()+" à "+distance +" metros");
 
 
         return convertView;

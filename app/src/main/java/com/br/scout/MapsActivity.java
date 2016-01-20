@@ -3,6 +3,8 @@ package com.br.scout;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -13,9 +15,12 @@ import android.widget.ListView;
 
 import com.br.scout.adapter.ObstacleListAdapter;
 import com.br.scout.backend.DatabaseOperations;
+import com.br.scout.beans.Establishment;
 import com.br.scout.beans.Obstacle;
 import com.br.scout.beans.User;
 import com.br.scout.widget.Utility;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -24,6 +29,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -63,11 +69,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onMyLocationChange(Location location) {
 
-                //mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
-                //CameraUpdate center =
-                //      CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 20);
+                mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
+                CameraUpdate center =
+                     CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 25);
 
-                //mMap.moveCamera(center);
+                mMap.moveCamera(center);
                 MY_LOC = new LatLng(location.getLatitude(), location.getLongitude());
                 obstacleList.clear();
                 obstacleList.addAll(dbOperations.listAllObstacles());
@@ -91,27 +97,70 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onMapClick(final LatLng latLng) {
                 //TODO verificar se já existe marcação
-                final Obstacle obstacle = new Obstacle();
-                LayoutInflater factory = LayoutInflater.from(getApplicationContext());
-                final View textEntryView = factory.inflate(R.layout.edit_text_dialog, null);
+                final LayoutInflater factory = LayoutInflater.from(getApplicationContext());
                 new AlertDialog.Builder(ctx)
-                        .setTitle("Nome do obstaculo")
-                        .setView(textEntryView)
-                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        .setTitle("Tipo de marcação")
+                        .setNegativeButton("Obstaculo", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                obstacle.setName(String.valueOf(((EditText) textEntryView.findViewById(R.id.edit_text)).getText()));
-                                obstacle.setLatitude(latLng.latitude);
-                                obstacle.setLongitude(latLng.longitude);
-                                obstacle.setUser(new User());
-                                if (!obstacle.getName().isEmpty()) {
-                                    dbOperations.addObstacle(obstacle);
-                                    mMap.addMarker(new MarkerOptions().position(new LatLng(obstacle.getLatitude(), obstacle.getLongitude()))
-                                            .title(obstacle.getName()));
-                                }
+                                final Obstacle obstacle = new Obstacle();
+                                final View textEntryView = factory.inflate(R.layout.edit_text_dialog, null);
+                                new AlertDialog.Builder(ctx)
+                                        .setTitle("Nome do obstaculo")
+                                        .setView(textEntryView)
+                                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                obstacle.setName(String.valueOf(((EditText) textEntryView.findViewById(R.id.edit_text)).getText()));
+                                                obstacle.setLatitude(latLng.latitude);
+                                                obstacle.setLongitude(latLng.longitude);
+                                                obstacle.setUser(new User());
+                                                if (!obstacle.getName().isEmpty()) {
+                                                    dbOperations.addObstacle(obstacle);
+                                                   // mMap.addMarker(new MarkerOptions().position(new LatLng(obstacle.getLatitude(), obstacle.getLongitude()))
+                                                     //       .title(obstacle.getName()));
+                                                }
+                                            }
+                                        })
+                                        .setNegativeButton("Cancelar", null).show();
                             }
                         })
-                        .setNegativeButton("Cancelar", null).show();
+                        .setPositiveButton("Estabelecimento", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                final Establishment establishment = new Establishment();
+                                final View textEntryView = factory.inflate(R.layout.establishment_mark, null);
+                                new AlertDialog.Builder(ctx)
+                                        .setTitle("Novo estabelecimento")
+                                        .setView(textEntryView)
+                                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                establishment.setName(String.valueOf(((EditText) textEntryView.findViewById(R.id.name_text)).getText()));
+                                                establishment.setLatitude(latLng.latitude);
+                                                establishment.setLongitude(latLng.longitude);
+                                                establishment.setUser(new User());
+                                                establishment.setDescription(String.valueOf(((EditText) textEntryView.findViewById(R.id.descrip_text)).getText()));
+
+                                                try {
+                                                    Geocoder geo = new Geocoder(MapsActivity.this.getApplicationContext(), Locale.getDefault());
+                                                    List<Address> addresses = geo.getFromLocation(latLng.latitude, latLng.longitude, 1);
+                                                    String newAddress = addresses.get(0).getAddressLine(0) + ", " + addresses.get(0).getAddressLine(1);
+                                                    establishment.setAddress(newAddress);
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                }
+                                                if (!establishment.getName().isEmpty() && !establishment.getDescription().isEmpty()) {
+                                                    dbOperations.addEstablishment(establishment);
+                                                    mMap.addMarker(new MarkerOptions().position(new LatLng(establishment.getLatitude(), establishment.getLongitude()))
+                                                            .title(establishment.getName()).snippet(establishment.getAddress()));
+                                                }
+                                            }
+                                        })
+                                        .setNegativeButton("Cancelar", null).show();
+                            }
+                        }).show();
+
 
             }
         });

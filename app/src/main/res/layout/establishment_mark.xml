@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="12dp">
+    <EditText
+        android:textColorHint="@color/colorPrimary"
+        android:textColor="#000000"
+        android:id="@+id/name_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nome do estabelecimento"/>
+    <EditText
+        android:id="@+id/descrip_text"
+        android:textColor="#000000"
+        android:textColorHint="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Descreva com o maior numero de detalher possível o estabelicimento"/>
+
+
+</LinearLayout>
