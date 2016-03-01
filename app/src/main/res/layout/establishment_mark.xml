@@ -4,19 +4,24 @@
     android:layout_height="match_parent"
     android:padding="12dp">
     <EditText
-        android:textColorHint="@color/colorPrimary"
-        android:textColor="#000000"
+        android:textColor="#FFF"
+        android:textColorHint="#FFF"
+        android:background="@color/colorPrimary"
         android:id="@+id/name_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="5dp"
         android:hint="Nome do estabelecimento"/>
     <EditText
         android:id="@+id/descrip_text"
-        android:textColor="#000000"
-        android:textColorHint="@color/colorPrimary"
+        android:textColor="#FFF"
+        android:textColorHint="#FFF"
+        android:background="@color/colorPrimary"
+        android:layout_marginTop="10dp"
+        android:padding="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Descreva com o maior numero de detalher possível o estabelicimento"/>
+        android:hint="Descreva com o maior numero de detalhes possível o estabelecimento"/>
 
 
 </LinearLayout>

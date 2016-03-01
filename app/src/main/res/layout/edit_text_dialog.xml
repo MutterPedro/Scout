@@ -1,7 +1,15 @@
-<EditText xmlns:android="http://schemas.android.com/apk/res/android"
-     android:layout_width="match_parent"
-    android:textColor="#000"
-    android:id="@+id/edit_text"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-</EditText>
+    <EditText
+        android:layout_width="match_parent"
+        android:textColor="#FFF"
+        android:textColorHint="#FFF"
+        android:background="@color/colorPrimary"
+        android:padding="5dp"
+        android:layout_margin="10dp"
+        android:id="@+id/edit_text"
+        android:layout_height="match_parent">
+    </EditText>
+</LinearLayout>

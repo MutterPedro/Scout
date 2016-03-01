@@ -18,7 +18,12 @@
                 android:layout_height="match_parent"/>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
-
+    <TextView
+        android:id="@+id/tip_text"
+        android:padding="5dp"
+        android:text="Toque em qualquer local do mapa para adicionar um novo obstaculo/estabelecimento"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
     <fragment
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/map"

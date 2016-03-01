@@ -28,6 +28,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -55,6 +57,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         listView = (ListView) findViewById(R.id.list_item);
         adapter = new ObstacleListAdapter(this, obstacleList);
         listView.setAdapter(adapter);
+
+        if(!Utility.USER.isSpecial()){
+            ((View) listView.getParent().getParent()).setVisibility(View.GONE);
+        } else{
+            findViewById(R.id.tip_text).setVisibility(View.GONE);
+            findViewById(R.id.map).setVisibility(View.GONE);
+        }
     }
 
 
@@ -70,14 +79,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onMyLocationChange(Location location) {
 
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
-                CameraUpdate center =
-                     CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 25);
+               // CameraUpdate center =
+                 //    CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 25);
 
-                mMap.moveCamera(center);
+                //mMap.moveCamera(center);
                 MY_LOC = new LatLng(location.getLatitude(), location.getLongitude());
                 obstacleList.clear();
                 obstacleList.addAll(dbOperations.listAllObstacles());
+
                 for(int i=0;i<obstacleList.size();i++){
+
                     LatLng marker = new LatLng(obstacleList.get(i).getLatitude(), obstacleList.get(i).getLongitude());
                     mMap.addMarker(new MarkerOptions().position(marker).title(obstacleList.get(i).getName()));
                 }

@@ -16,6 +16,7 @@ import com.br.scout.beans.User;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -167,13 +168,14 @@ public class DatabaseOperations extends SQLiteOpenHelper {
             obstacle.setLongitude(Double.parseDouble(cursor.getString(3)));
 
             int distance = calculationByDistance(MapsActivity.MY_LOC, new LatLng(obstacle.getLatitude(), obstacle.getLongitude()));
+            obstacle.setDistance(distance);
             if(distance <= 10)
                 list.add(obstacle);
         }
 
         cursor.close();
 
-
+        Collections.sort(list);
         return list;
     }
 

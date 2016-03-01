@@ -55,7 +55,7 @@ public class SignUpActivity extends AppCompatActivity {
                 finish();
                 startActivity(new Intent(this,MapsActivity.class));
             } catch (Exception e){
-                new AlertDialog.Builder(this).setTitle("Erro").setMessage("Não foi possível relaizar o cadastro").setPositiveButton("Ok",null).show();
+                new AlertDialog.Builder(this).setTitle("Erro").setMessage("Não foi possível realizar o cadastro").setPositiveButton("Ok",null).show();
             }
         }
         return super.onOptionsItemSelected(item);

@@ -32,6 +32,7 @@ public class WelcomeActivity extends Activity {
         setContentView(R.layout.activity_welcome);
 
         ctx=this;
+        Utility.USER = new User();
         TextView skipLogin = (TextView) findViewById(R.id.skip_login);
         skipLogin.setText(Html.fromHtml("<u>Pular Cadastro</u>"));
         skipLogin.setOnClickListener(new View.OnClickListener() {
