@@ -8,7 +8,12 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -24,6 +29,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -33,7 +39,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     public static LatLng MY_LOC;
     private GoogleMap mMap;
@@ -47,7 +53,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+
+        // Obtain the SupportMapFragme1nt and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -86,11 +93,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 MY_LOC = new LatLng(location.getLatitude(), location.getLongitude());
                 obstacleList.clear();
                 obstacleList.addAll(dbOperations.listAllObstacles());
+                if(obstacleList.size() > 0){
+                    findViewById(R.id.text_any).setVisibility(View.GONE);
+                }
 
                 for(int i=0;i<obstacleList.size();i++){
-
                     LatLng marker = new LatLng(obstacleList.get(i).getLatitude(), obstacleList.get(i).getLongitude());
-                    mMap.addMarker(new MarkerOptions().position(marker).title(obstacleList.get(i).getName()));
+                    mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.icone)).position(marker).title(obstacleList.get(i).getName()));
                 }
 
                 adapter.notifyDataSetChanged();
@@ -163,7 +172,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                                 }
                                                 if (!establishment.getName().isEmpty() && !establishment.getDescription().isEmpty()) {
                                                     dbOperations.addEstablishment(establishment);
-                                                    mMap.addMarker(new MarkerOptions().position(new LatLng(establishment.getLatitude(), establishment.getLongitude()))
+                                                    mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.icone2)).position(new LatLng(establishment.getLatitude(), establishment.getLongitude()))
                                                             .title(establishment.getName()).snippet(establishment.getAddress()));
                                                 }
                                             }
@@ -177,4 +186,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
-}
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_map, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_logout) {
+            Utility.USER = new User();
+            this.onBackPressed();
+        }
+
+        return true;
+    }
+
+    }

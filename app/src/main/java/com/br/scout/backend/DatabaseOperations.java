@@ -169,13 +169,13 @@ public class DatabaseOperations extends SQLiteOpenHelper {
 
             int distance = calculationByDistance(MapsActivity.MY_LOC, new LatLng(obstacle.getLatitude(), obstacle.getLongitude()));
             obstacle.setDistance(distance);
-            if(distance <= 10)
+            if(distance <= 100)
                 list.add(obstacle);
         }
 
         cursor.close();
 
-        Collections.sort(list);
+        //Collections.sort(list);
         return list;
     }
 
@@ -222,7 +222,12 @@ public class DatabaseOperations extends SQLiteOpenHelper {
             user.setPassword(cursor.getString(3));
             user.setPhotoLink(cursor.getString(4));
             user.setPoints(Double.parseDouble(cursor.getString(5)));
-            user.setSpecial(Boolean.parseBoolean(cursor.getString(6)));
+            if(cursor.getString(6).equals("1")){
+                user.setSpecial(true);
+            } else{
+                user.setSpecial(false);
+            }
+
             cursor.close();
         } else {
             user = null;
